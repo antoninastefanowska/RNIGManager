@@ -1,7 +1,6 @@
 import CryptoJS from 'crypto-js';
-import { encode } from 'base-64';
 
-import { BACKEND_APP_ID, BACKEND_APP_SECRET, APP_NAME } from './APIKeys';
+import { BACKEND_APP_ID, BACKEND_APP_SECRET } from './APIKeys';
 
 const BASE_URL = 'https://socialsynchro.pythonanywhere.com/backend/';
 
@@ -17,7 +16,6 @@ class BackendClient {
             }
         });
         let responseObj = await response.json();
-        console.log(responseObj);
         return responseObj['code'];
     }
 }

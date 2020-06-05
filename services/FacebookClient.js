@@ -28,15 +28,6 @@ class FacebookClient {
         return responseObj['access_token'];
     }
 
-    static async inspectToken(token) {
-        let requestUrl = BASE_URL + 'debug_token?' +
-            'input_token=' + token +
-            '&access_token=' + FACEBOOK_APP_ID + '|' + FACEBOOK_APP_SECRET;
-        let response = await fetch(requestUrl);
-        let responseObj = await response.json();
-        return responseObj['user_id'];
-    }
-
     static async getUserPagesIDs(accessToken) {
         let requestUrl = BASE_URL + 'me/accounts?' +
             'access_token=' + accessToken;
@@ -78,29 +69,25 @@ class FacebookClient {
         return postIDs;
     }
 
-    static async getInstagramPostURL(postID, accessToken) {
-        let requestUrl = BASE_URL + postID + 
-            '?fields=media_url' +
-            + '&access_token=' + accessToken;
-        let response = await fetch(requestUrl);
-        let responseObj = await response.json();
-        return responseObj['media_url'];
-    }
-
     static async getInstagramPostInfo(postID, accessToken) {
         let requestUrl = BASE_URL + postID + 
-            '?fields=id,caption,comments,children,media_type,media_url,timestamp,permalink,thumbnail_url' +
-            + '&access_token=' + accessToken;
+            '?fields=id,caption,children,media_type,media_url,timestamp,permalink,thumbnail_url' +
+            '&access_token=' + accessToken;
         let response = await fetch(requestUrl);
         let responseObj = await response.json();
-        console.log('getInstagramPostInfo:')
-        console.log(responseObj);
-        return new Post(responseObj['id'], responseObj['caption'], responseObj['media_type'], responseObj['timestamp'], responseObj['permalink'], responseObj['thumbnail_url']);
+        return new Post(responseObj['id'], 
+                        responseObj['caption'], 
+                        responseObj['media_type'], 
+                        responseObj['media_url'], 
+                        responseObj['timestamp'], 
+                        responseObj['permalink'], 
+                        responseObj['thumbnail_url'], 
+                        responseObj['children']);
     }
 
-    static async getInstagramCommentIDs(postID, accessToken) {
+    static async getInstagramCommentsIDs(postID, accessToken) {
         let requestUrl = BASE_URL + postID + '/comments?' +
-            + 'access_token=' + accessToken;
+            'access_token=' + accessToken;
         let response = await fetch(requestUrl);
         let responseObj = await response.json();
         let commentIDs = [];
@@ -111,11 +98,20 @@ class FacebookClient {
 
     static async getInstagramCommentInfo(commentID, accessToken) {
         let requestUrl = BASE_URL + commentID +
-            '?fields=instagram_comment_id,created_at,instagram_user,message' +
+            '?fields=id,timestamp,user,text' +
             '&access_token=' + accessToken;
         let response = await fetch(requestUrl);
         let responseObj = await response.json();
-        return new Comment(responseObj['instagram_comment_id'], responseObj['created_at'], responseObj['instagram_user'], responseObj['message']);
+        return new Comment(responseObj['id'], responseObj['timestamp'], responseObj['user'], responseObj['text']);
+    }
+
+    static async getInstagramChildInfo(childID, accessToken) {
+        let requestUrl = BASE_URL + childID +
+            '?fields=id,media_url' +
+            '&access_token=' + accessToken;
+        let response = await fetch(requestUrl);
+        let responseObj = await response.json();
+        return new Post(responseObj['id'], null, null, responseObj['media_url'], null, null, null, null);
     }
 }
 

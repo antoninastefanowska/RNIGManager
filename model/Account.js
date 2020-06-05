@@ -1,9 +1,9 @@
 class Account {
-    constructor(id, username, pictureUrl) {
+    constructor(id, username, pictureUrl, accessToken) {
         this.id = id;
         this.username = username;
         this.pictureUrl = pictureUrl;
-        this.accessToken = null;
+        this.accessToken = accessToken;
     }
 }
 

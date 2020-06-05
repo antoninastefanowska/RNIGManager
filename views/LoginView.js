@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { View, Button, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
+import { Entypo } from '@expo/vector-icons';
 
 import FacebookClient from '../services/FacebookClient';
 import BackendClient from '../services/BackendClient';
-import Style from '../Style';
+
+import Style, { BIG_ICON_SIZE, YELLOW } from '../utils/Style';
+import StateManager from '../utils/StateManager';
 
 const UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const LOWER = UPPER.toLowerCase();
@@ -25,18 +28,24 @@ class LoginView extends Component {
 
     render() {
         return (
-            <View style={Style.container}>
-                <Button style={Style.input} title='Zaloguj' onPress={this.onLoginPressed} />
-                <Button style={Style.input} title='Potwierdź' onPress={this.onConfirmPressed} />
-                <ProgressBar indeterminate={true} visible={this.state.loading} />
+            <View style={Style.loginContainer}>
+                <View style={Style.loginSubContainer}>
+                    <TouchableOpacity onPress={this.onLoginPressed} style={Style.loginButtonContainer}>
+                        <View style={Style.horizontalContainer}>
+                            <Text style={Style.largeWhiteLabel}>ZALOGUJ SIĘ</Text>
+                            <Entypo name='facebook' size={BIG_ICON_SIZE} style={Style.whiteIcon} />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onConfirmPressed} style={Style.loginButtonContainer}>
+                        <View style={Style.horizontalContainer}>
+                            <Text style={Style.largeWhiteLabel}>POTWIERDŹ</Text>
+                            <Entypo name='check' size={BIG_ICON_SIZE} style={Style.whiteIcon} />
+                        </View>
+                    </TouchableOpacity>
+                </View>               
+                <ProgressBar indeterminate={true} visible={this.state.loading} color={YELLOW} /> 
             </View>
         );
-    }
-
-    updateStateProperty(property, value) {
-        let newState = this.state;
-        newState[property] = value;
-        this.setState(newState);
     }
 
     onLoginPressed() {
@@ -46,7 +55,7 @@ class LoginView extends Component {
     }
 
     async onConfirmPressed() {
-        this.updateStateProperty('loading', true);
+        StateManager.updateStateProperty(this, 'loading', true);
         let accounts = [];
         let code = await BackendClient.getFacebookCode(this.loginState);
         let accessToken = await FacebookClient.getAccessToken(code);
@@ -55,10 +64,11 @@ class LoginView extends Component {
             let accountID = await FacebookClient.getInstagramAccountID(pageID, accessToken);
             if (accountID != null) {
                 let account = await FacebookClient.getInstagramAccountInfo(accountID, accessToken);
+                account.accessToken = accessToken;
                 accounts.push(account);
             }
         }
-        this.updateStateProperty('loading', false);
+        StateManager.updateStateProperty(this, 'loading', false);
         this.props.navigation.navigate('Accounts', { accounts: accounts });
     }
 }

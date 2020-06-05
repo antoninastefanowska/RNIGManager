@@ -6,21 +6,21 @@ import AccountsView from './views/AccountsView';
 import LoginView from './views/LoginView';
 import PostsView from './views/PostsView';
 import PostView from './views/PostView';
-import CommentsView from './views/CommentsView';
+import OembedView from './views/OembedView';
 import CreatePostView from './views/CreatePostView';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Accounts'>
-        <Stack.Screen name='Accounts' component={AccountsView} />
-        <Stack.Screen name='Login' component={LoginView} />
-        <Stack.Screen name='Posts' component={PostsView} />
-        <Stack.Screen name='Post' component={PostView} />
-        <Stack.Screen name='Comments' component={CommentsView} />
-        <Stack.Screen name='CreatePost' component={CreatePostView} />
+        <Stack.Screen name='Accounts' component={AccountsView} options={{headerShown: false}} />
+        <Stack.Screen name='Login' component={LoginView} options={{headerShown: false}} />
+        <Stack.Screen name='Posts' component={PostsView} options={{headerShown: false}} />
+        <Stack.Screen name='Post' component={PostView} options={{headerShown: false}} />
+        <Stack.Screen name='Oembed' component={OembedView} options={{headerShown: false}} />
+        <Stack.Screen name='CreatePost' component={CreatePostView} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

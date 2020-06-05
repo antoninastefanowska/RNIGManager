@@ -1,9 +1,10 @@
 class Comment {
-    constructor(id, createdAt, instagramUser, message) {
+    constructor(id, timestamp, user, text) {
         this.id = id;
-        this.createdAt = createdAt;
-        this.instagramUser = instagramUser;
-        this.message = message;
+        this.timestamp = timestamp;
+        this.user = user;
+        this.text = text;
+        this.author = null;
     }
 }
 

@@ -1,5 +1,5 @@
 class Post {
-    constructor(id, caption, mediaType, mediaUrl, timestamp, permalink, thumbnailUrl) {
+    constructor(id, caption, mediaType, mediaUrl, timestamp, permalink, thumbnailUrl, children) {
         this.id = id;
         this.caption = caption;
         this.mediaType = mediaType;
@@ -7,6 +7,7 @@ class Post {
         this.timestamp = timestamp;
         this.permalink = permalink;
         this.thumbnailUrl = thumbnailUrl;
+        this.children = children;
         this.oembed = null;
     }
 }
