@@ -6,10 +6,7 @@ export const PINK = '#DD2A7B';
 export const PURPLE = '#8134AF';
 export const BLUE = '#515BD4';
 
-const PRIMARY_COLOR = '#59ffee';
-const SECONDARY_COLOR = '#242a78';
 const LIGHT_COLOR = '#FAFAFA';
-
 const FACEBOOK_BLUE = '#3B5998';
 
 export const ICON_SIZE = 40;
